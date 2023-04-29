@@ -7,7 +7,7 @@ if (!array_key_exists('password', $_POST)){
 }
 try{
     $login = $_POST['login'];
-    $pass = md5($_POST['password']);
+    $pass = $_POST['password'];
 
     $user = $db->query("SELECT * FROM users WHERE login='$login' AND password='$pass'")->fetchArray();
     if ($user){
@@ -16,7 +16,7 @@ try{
     header('Location: /homepage.php');
     }
     else{
-            $_SESSION['error']='такого пользователя не существует или не верный пароль';
+            $_SESSION['error']=$db->query("SELECT * FROM users WHERE login='$login'")->fetchArray();
             header('Location: /login.php');
     }
 }

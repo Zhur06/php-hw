@@ -4,7 +4,7 @@
 session_start();
 // echo require_once('header.php');
 if (array_key_exists('error',$_SESSION))
-    echo $_SESSION['error'];
+    print_r($_SESSION['error']);
     unset($_SESSION['error']);
     ?>
 <form action='/core/check_login.php' method='POST'>

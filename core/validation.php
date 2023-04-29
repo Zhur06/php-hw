@@ -11,9 +11,19 @@ $db=connect();
         $class_letter = $_POST['class_letter'];
         $interests = $_POST['interests'];
         $email = $_POST['email'];
-        $password = md5($_POST['password']);
-        if ($_POST['password']===$_POST['password2'] and strlen($_POST['password'])>6){
-            echo 'password good<br>';
+        $password = $_POST['password'];
+        if (!($password === $_POST['password2'])) {
+            echo "Passwords aren't same.";
+        } elseif (strlen($password) < 6) {
+            echo "Password is too short.";
+        } elseif (!preg_match("#[A-Z]+#", $password)) {
+            echo "Password must contain at least one uppercase letter.";
+        } elseif (!preg_match("#[a-z]+#", $password)) {
+            echo "Password must contain at least one lowercase letter.";
+        } elseif (!preg_match("#\W+#", $password)) {
+            echo "Password must contain at least one special character.";
+        } else {
+            echo "Password is strong enough.";
             $user = $db->query("SELECT * FROM users WHERE login='$login'")->fetchArray();
             if ($user){
                 $_SESSION['error'] = "Такой пользовтатель уже существует";
@@ -28,10 +38,6 @@ $db=connect();
                 }
 
             }
-        else {
-            $_SESSION['error'] = 'вы не правильно ввели пароль';
-            header('Location: /registration.php ');
-                }
         }
     else{
         unset($_SESSION['error']);
